@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load replace cart %}
+{% block content %}
+<div class="container">
+<div class="row">
+    <div class="col-6">
+        <img src="{{product.image.url}}" alt="" srcset="">
+    </div>
+    <div class="col-6">
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Product name</th>
+                        <th scope="col">{{product.name}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">In stock</th>
+                        <td>{{product.in_stock}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Price</th>
+                        <td>${{product.price}}</td>
+                      </tr>
+                      {% if product.show_colors %}
+                      <tr>
+                        <th scope="row">Available Colors</th>
+                        <td>
+                          <select id="select_color" class="dd-select-field" required>
+                            {% for color in product.color.all %}
+                            <option {% if forloop.first %}selected{% endif %}value="{{color}}" >{{color}}</option>
+                              {% endfor %}
+                            </select>
+                        </td>
+                      </tr>
+                      {% endif %}
+                      {% if product.show_sizes %}
+                      <tr>
+                        <th scope="row">Available Sizes</th>
+                        <td>
+                          <select id="select_size" class="dd-select-field" required>
+                            <option value="small" >small</option>
+                            <option selected value="medium" >medium</option>
+                            <option value="large" >large</option>
+                            <option value="extra large" >extra large</option>
+                            </select>
+                        </td>
+                      </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+            </div>
+            <div class="col-12">
+                {% if product|is_in_cart:request.session.cart %}
+                <div class="row no-gutters">
+                    <form action="/#{{product.id}}" class="col-2 " method="post">
+                        {% csrf_token %}
+                        <input hidden type="text" name='product' value='{{product.id}}'>
+                        <input hidden type="text" name='remove' value='True'>
+                        <input type="submit" value=" - " id="remove_btn" product_name="-{{product.name|replace}}" class="btn btn-block btn-success border-right">
+                    </form>
+                    <div class="text-center col btn btn-success">{{product|cart_quantity:request.session.cart}} in Cart</div>
+                    <form action="/#{{product.id}}" class="col-2 " method="post">
+                        {% csrf_token %}
+                        <input hidden type="text" name='product' value='{{product.id}}'>
+                        <input type="submit" value=" + " id="add_btn" product_name="+{{product.name|replace}}" class="btn btn-block btn-success border-left">
+                    </form>
+                </div>
+                {% else %}
+                     <form action="/#{{product.id}}" method="POST" class="btn-block">
+                    {% csrf_token %}
+                    <input hidden type="text" name='product' value='{{product.id}}'>
+                    <input type="submit" product_name="+{{product.name|replace}}" id="add_btn" class="float-right btn btn-success form-control"
+                        value="Add To Cart">
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+</div>
+</div>
+    
+</div>
+{% endblock %}

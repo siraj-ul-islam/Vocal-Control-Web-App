@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>E-commerce Website</title>
+
+  <style>
+    nav{
+      background-color: green;
+    }
+    .one-edge-shadow {
+              box-shadow: 0 8px 2px -5px rgb(246, 245, 245);
+    }
+  
+  .display-8{
+    font-weight: 200;
+    font-size: 30px;
+    color: teal-200;
+  }
+  .text-div{
+    height: 100px;
+    width: 70%;
+    background-color: rgba(0, 0, 0, 0.492);
+    z-index: 999;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+  }
+
+  #text-div{
+    position: fixed;
+    left: 200px;
+    bottom: 10px;
+    transition: bottom 1s ease;
+  }
+  .d-none {
+    bottom: -100px;
+  }
+  #button-chat{
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    background-color: red;
+    cursor: pointer;
+    color: white;
+    Z-index: 999;
+    width: 4rem;
+    height: 4rem;
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem; /* 40px */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border: 0;
+    outline: 0;
+    border-radius:100%;
+    animation: bounce 1s infinite;
+  }
+  #stog{
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    cursor: pointer;
+    color: white;
+    Z-index: 999;
+    width: 4rem;
+    height: 4rem;
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem; /* 40px */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border: 0;
+    outline: 0;
+    border-radius:100%;
+    animation: bounce 1s infinite;
+  }
+
+  .not-listen {
+    background-color: rgb(8 145 178);
+  }
+  .listen {
+    background-color: red;
+  }
+
+  .chat-text-div{
+    height: 20vh;
+    width: auto;
+    min-width: 20vw;
+    position: fixed;
+    left: 40px;
+    bottom: 120px;
+    z-index: 999;
+    border-bottom-left-radius: 20%;
+    border-top-right-radius: 20%;
+
+
+    background-color: rgba(0, 0, 0, 0.492);
+    z-index: 999;
+    color: white;
+    padding: 15px;
+    display: flex;
+    font-size: 27px;
+    backdrop-filter: blur(6px);
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  </style>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</head>
+
+<body>
+  <!-- navbar -->
+
+<nav class="one-edge-shadow
+  navbar navbar-light
+  sticky-top navbar 
+  navbar-expand-lg
+  text-white">
+    <a class="navbar-brand ms-3 text-dark " href="/">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    <img src="https://www.freepnglogos.com/uploads/shopping-cart-png/shopping-cart-svg-png-icon-download-28.png" style="width:50px;height:50px; color:text-light;">E-Commerce</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/store">Store <span class="sr-only">(current)</span></a>
+        </li>
+
+          </ul>
+
+
+
+
+      <ul class=" navbar-nav my-2 my-lg-0">
+
+        <li class="nav-item active">
+          <a class="nav-link" href="/cart">Cart 
+            <span class="badge badge-success">{{request.session.cart.keys|length}}</span>
+            <span class="sr-only">(current)</span></a>
+        </li>
+
+        {% if request.session.customer %}
+        
+        <li class="nav-item active ">
+          <a class="nav-link" href="/orders">Orders<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active ">
+          <a class="nav-link" href="/logout">Logout<span class="sr-only">(current)</span></a>
+        </li>
+        {% else %}
+       
+        <li class="nav-item active">
+          <a class="nav-link" href="/signup">Signup<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a>
+        </li>
+        {% endif %}
+
+
+      </ul>
+
+
+    </div>
+  </nav>
+  <!---->
+  
+  <button type="button" class="bottom not-listen" id="stog">
+    <ion-icon name="mic-outline"></ion-icon>
+  </button>
+  <button type="button" class="button-chat" id="button-chat">
+    <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+  </button>
+  <div class="chat-text-div" id="chat-text-div" contenteditable="true"></div>
+  <div class="text-div" id="text-div"></div>
+
+  {% block content %}{% endblock %}
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+    <script>
+
+
+// //Get select object
+// var objSelectSize = document.getElementById("select_size");
+// console.log(objSelectSize)
+// //Set selected
+// setSelectedValue(objSelectSize, "S");
+
+// function setSelectedValue(objSelectSize1, valueToSet1) {
+//     for (var i = 0; i < objSelectSize1.options.length; i++) {
+//         if (objSelectSize1.options[i].text== valueToSet1) {
+//           objSelectSize1.options[i].selected = true;
+//             return;
+//         }
+//     }
+// }
+
+
+
+
+
+
+      try {
+        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        var recognition = new SpeechRecognition();
+      }
+      catch(e) {
+        console.error(e);
+        $('.no-browser-support').show();
+        $('.app').hide();
+      }
+      
+      
+      var noteTextarea = $('#note-textarea');
+      var instructions = $('#recording-instructions');
+      var notesList = $('ul#notes');
+      
+      var noteContent = '';
+      
+      // Get all notes from previous sessions and display them.
+      // var notes = getAllNotes();
+      // renderNotes(notes);
+      
+      
+      
+      /*-----------------------------
+            Voice Recognition 
+      ------------------------------*/
+      
+      // If false, the recording will stop after a few seconds of silence.
+      // When true, the silence period is longer (about 15 seconds),
+      // allowing us to keep recording even when the user pauses. 
+      recognition.continuous = true;
+      /*
+
+      function act(transcript){
+        noteContent += transcript;
+          noteContent = noteContent.toLowerCase()
+          $('#text-div').text(noteContent);
+          if(noteContent.includes("car") && noteContent.includes("show")){
+            window.location = "/cart"
+          }else if(noteContent.includes("home") && noteContent.includes("go")){
+            window.location = "/"
+          }else if(noteContent.includes("log out")  && noteContent.includes("go")){
+            window.location = "/logout"
+          }else if(noteContent.includes("sign up") && noteContent.includes("go")){
+            window.location = "/signup"
+          }else if(noteContent.includes("login") && noteContent.includes("go")){
+            window.location = "/login"
+          }else if(noteContent.includes("submit")){
+            $("body > div.container > div > div > form > button").click();
+          }else if(noteContent.includes("add") && noteContent.includes("to shopping car")){
+            var prod_name = noteContent.replace('add', '').replace("to shopping ",'').replace("cart",'').replace("card",'')
+            try{
+              document.querySelector(`input[product_name*='${prod_name.trim()}'][product_name*='+']`).click();
+            }catch(e){
+              
+              noteContent = "";
+            }
+          }else if(noteContent.includes("remove") && noteContent.includes("from shopping car")){
+            try{
+              var prod_name = noteContent.replace('remove', '').replace("from shopping",'').replace("cart",'').replace("card",'')
+              console.log(prod_name)
+              document.querySelector(`input[product_name*="${prod_name.trim()}"][product_name*="-"]`).click();
+            }catch(e){
+              
+              noteContent = "";
+            }
+          }
+
+          noteContent = "";
+
+          //noteTextarea.val(noteContent);
+      }
+
+*/
+function act(transcript){
+  let message = new SpeechSynthesisUtterance();
+        message.volume = 1;
+        message.rate = 1;
+        message.pitch = 1;
+  noteContent += transcript;
+    noteContent = noteContent.toLowerCase()
+    $('#text-div').text(noteContent);
+    if(noteContent.includes("car") && noteContent.includes("show")){
+        //text speak
+        message.text = "going to shopping cart";
+        // speak!
+        speechSynthesis.speak(message);
+      window.location = "/cart"
+    }else if(noteContent.includes("home") && noteContent.includes("go")){
+      //text speak
+        message.text = "OK going to home page";
+        // speak!
+        speechSynthesis.speak(message);
+      window.location = "/"
+    }else if(noteContent.includes("log out") && noteContent.includes("go")){
+      //text speak
+        message.text = "Logging you out";
+        // speak!
+        speechSynthesis.speak(message);
+      window.location = "/logout"
+    }else if(noteContent.includes("sign up") && noteContent.includes("go")){
+      //text speak
+        message.text = "going to sign up page";
+        // speak!
+        speechSynthesis.speak(message);
+      window.location = "/signup"
+    }else if(noteContent.includes("add it") || noteContent.includes("add this")){
+      //text speak
+        message.text = "ok Adding this item to shopping cart";
+        // speak!
+        speechSynthesis.speak(message);
+        document.querySelector("#add_btn").click();
+      }
+                  else if(noteContent.includes("select size") || noteContent.includes("choice size")){
+
+            //Get select object
+            var objSelectSize = document.getElementById("select_size");
+            console.log(objSelectSize)
+            //Set selected
+            let size_array = []
+            let size_name;
+            let check_size = false;
+            function setSelectedValueAddArray(objSelectSize1) {
+                for (var i = 0; i < objSelectSize1.options.length; i++) {
+                      size_array.push(objSelectSize1.options[i].text)
+                }
+            }
+            setSelectedValueAddArray(objSelectSize)
+            
+
+            console.log(size_array)
+
+            for (var i = 0; i < size_array.length; i++) {
+                    if (noteContent.includes(size_array[i])) {
+                      console.log(size_array[i])
+                      size_name = size_array[i]
+                    }
+                }
+                function setSelectedValue(objSelectSize1, valueToSet) {
+                for (var i = 0; i < objSelectSize1.options.length; i++) {
+                    if (objSelectSize1.options[i].text== valueToSet) {
+                      console.log(objSelectSize1.options[i].text)
+                      objSelectSize1.options[i].selected = true;
+                      check_size = true
+                        return;
+                    }
+                }
+            }
+            setSelectedValue(objSelectSize, size_name);
+            
+
+            if (check_size){
+              //text speak
+            message.text = `ok Selecting ${size_name}`;
+            // speak!
+            speechSynthesis.speak(message);
+
+            }else{
+                //text speak
+              message.text = "Unable to select your size";
+              // speak!
+              speechSynthesis.speak(message);
+            }
+
+            }
+      else if(noteContent.includes("select color") || noteContent.includes("choice color")){
+
+          //Get select object
+          var objSelectColor = document.getElementById("select_color");
+          console.log(objSelectColor)
+          //Set selected
+          let color_array = []
+          let color_name;
+          let check_color = false;
+          function setSelectedValueAddArrayColor(objSelectColor) {
+              for (var i = 0; i < objSelectColor.options.length; i++) {
+                    color_array.push(objSelectColor.options[i].text)
+              }
+          }
+          setSelectedValueAddArrayColor(objSelectColor)
+          
+
+          console.log(color_array)
+
+          for (var i = 0; i < color_array.length; i++) {
+                  if (noteContent.includes(color_array[i])) {
+                    console.log(color_array[i])
+                    color_name = color_array[i]
+                  }
+              }
+
+
+              function setSelectedValueSize(objSelectColor, valueToSet) {
+              for (var i = 0; i < objSelectColor.options.length; i++) {
+                  if (objSelectColor.options[i].text== valueToSet) {
+                    console.log(objSelectColor.options[i].text)
+                    objSelectColor.options[i].selected = true;
+                    check_color = true
+                      return;
+                  }
+              }
+          }
+              // if(color_name){
+          setSelectedValueSize(objSelectColor, color_name);
+          
+        // }
+
+          if (check_color){
+            //text speak
+        message.text = `ok Selecting ${color_name}`;
+        // speak!
+        speechSynthesis.speak(message);
+
+          }else{
+              //text speak
+            message.text = "Unable to select your color";
+            // speak!
+            speechSynthesis.speak(message);
+          }
+
+      }
+      else if(noteContent.includes("remove it") || noteContent.includes("remove this")){
+        //text speak
+          message.text = "ok removing this item to shopping cart";
+          // speak!
+          speechSynthesis.speak(message);
+          document.querySelector("#remove_btn").click();
+        }else if(noteContent.includes("login") && noteContent.includes("go")){
+      //text speak
+        message.text = "going to login page";
+        // speak!
+        speechSynthesis.speak(message);
+        window.location = "/login"
+      }else if(noteContent.includes("check out") && noteContent.includes("click")){
+      //text speak
+        message.text = "going to payment page";
+        // speak!
+        speechSynthesis.speak(message);
+        $("#checkout_click").click();
+      
+      }
+      else if(noteContent.includes("submit")){
+        $("body > div.container > div > div > form > button").click();
+        message.text = "OK Submitting the Log In Form";
+        // speak!
+        speechSynthesis.speak(message);
+    }else if(noteContent.includes("add") && noteContent.includes("to shopping car")){
+      var prod_name = noteContent.replace('add', '').replace("to shopping ",'').replace("cart",'').replace("card",'')
+      try{
+        //text speak
+        message.text = `add ${prod_name} to shopping car`;
+        document.querySelector(`*[product_name*='${prod_name.trim()}'][product_name*='+']`).click();
+        // speak!
+        speechSynthesis.speak(message);
+      }catch(e){
+        message.text = `No Item name ${prod_name}`;
+        
+        speechSynthesis.speak(message);
+        noteContent = "";
+      }
+    }else if(noteContent.includes("remove") && noteContent.includes("from shopping car")){
+      try{
+        var prod_name = noteContent.replace('remove', '').replace("from shopping",'').replace("cart",'').replace("card",'')
+        console.log(prod_name)
+        //text speak
+        message.text = "remove "+prod_name+" from shopping car";
+        // speak!
+        speechSynthesis.speak(message);
+        document.querySelector(`input[product_name*="${prod_name.trim()}"][product_name*="-"]`).click();
+      }catch(e){
+        noteContent = "";
+      }
+    }
+    noteContent = "";
+    //noteTextarea.val(noteContent);
+}
+
+$('#chat-text-div').keypress(e=>{
+        if(e.key == "Enter"){
+          let text = $('#chat-text-div').text()
+          act(text);
+          $('#chat-text-div').text('');
+        }
+      });
+
+      var checking = false;
+      $('#button-chat').on('click', function(e) {
+        if (noteContent.length) {
+          noteContent += ' ';
+        }
+        if (!checking) {
+          try{
+            // recognition.start();
+            $('#chat-text-div').removeClass("d-none");
+          }catch(e){
+          }
+          checking = true;
+          $('#button-chat').css('background-color', 'red');
+        }else{
+          // recognition.stop();
+          checking = false;
+          $('#chat-text-div').addClass("d-none");
+          $('#button-chat').css('background-color', 'indigo');
+        }
+      });
+
+      $('#chat-text-div').addClass("d-none");
+      $('#button-chat').css('background-color', 'indigo');
+
+
+      // This block is called every time the Speech APi captures a line. 
+      recognition.onresult = function(event) {
+      
+        // event is a SpeechRecognitionEvent object.
+        // It holds all the lines we have captured so far. 
+        // We only need the current one.
+        var current = event.resultIndex;
+      
+        // Get a transcript of what was said.
+        var transcript = event.results[current][0].transcript;
+      
+        // Add the current transcript to the contents of our Note.
+        // There is a weird bug on mobile, where everything is repeated twice.
+        // There is no official solution so far so we have to handle an edge case.
+        var mobileRepeatBug = (current == 1 && transcript == event.results[0][0].transcript);
+      
+        if(!mobileRepeatBug) {
+          act(transcript)
+        }
+      };
+
+      var listening = true;
+      $('#stog').on('click', function(e) {
+        if (noteContent.length) {
+          noteContent += ' ';
+        }
+        if (!listening) {
+          try{
+            recognition.start();
+            $('#text-div').removeClass("d-none");
+          }catch(e){
+          }
+          listening = true;
+        }else{
+          recognition.stop();
+          listening = false;
+          $('#text-div').addClass("d-none");
+          $('#stog').addClass("not-listen");
+          $('#stog').removeClass("listen");
+        }
+      });
+
+      recognition.onstart = () => {
+        $('#stog').removeClass("not-listen");
+        $('#stog').addClass("listen");
+        
+      };
+      
+      recognition.onspeechend  = () => {
+        listening = false;
+        $('#text-div').addClass("d-none");
+        $('#stog').addClass("not-listen");
+        $('#stog').removeClass("listen");
+      };
+      listening = false;
+      $('#text-div').addClass("d-none");
+      $('#stog').addClass("not-listen");
+      $('#stog').removeClass("listen");
+      // recognition.start();
+
+      function setInputFilter(textbox, inputFilter, errMsg) {
+        ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop", "focusout"].forEach(function(event) {
+          textbox.addEventListener(event, function(e) {
+            if (inputFilter(this.value)) {
+              // Accepted value
+              if (["keydown","mousedown","focusout"].indexOf(e.type) >= 0){
+                this.classList.remove("input-error");
+                this.setCustomValidity("");
+              }
+              this.oldValue = this.value;
+              this.oldSelectionStart = this.selectionStart;
+              this.oldSelectionEnd = this.selectionEnd;
+            } else if (this.hasOwnProperty("oldValue")) {
+              // Rejected value - restore the previous one
+              this.classList.add("input-error");
+              this.setCustomValidity(errMsg);
+              this.reportValidity();
+              this.value = this.oldValue;
+              this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+            } else {
+              // Rejected value - nothing to restore
+              this.value = "";
+            }
+          });
+        });
+      }
+      
+      try{
+        // Install input filters.
+        setInputFilter(document.getElementsByClassName("intTextBox")[0], value => /^-?\d*$/.test(value), "Must be an integer");
+        setInputFilter(document.getElementsByClassName("intTextBox")[1], value => /^-?\d*$/.test(value), "Must be an integer");
+      }
+
+      catch (e){
+        
+      }
+        
+    </script>
+</body>
+
+</html>
