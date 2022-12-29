@@ -2,7 +2,8 @@ from django.shortcuts import render , redirect , HttpResponseRedirect
 from django.contrib.auth.hashers import  check_password
 from store.models.customer import Customer
 from django.views import View
-
+import gtts  
+from playsound import playsound
 
 class Login(View):
     return_url = None
@@ -24,6 +25,13 @@ class Login(View):
                 if Login.return_url:
                     return HttpResponseRedirect (Login.return_url)
                 else:
+                    # make a request to google to get synthesis  
+                    # t1 = gtts.gTTS("Hi my name is Wilson I am your virtual assistance to control this website. you must have to say Wilson before every command")
+                    # # save the audio file  
+                    # t1.save("welcome.mp3")
+                    # play the audio file  
+                    playsound("welcome.mp3")           
+
                     Login.return_url = None
                     return redirect ('homepage')
             else:
@@ -32,7 +40,7 @@ class Login(View):
             error_message = 'Invalid !!'
 
         print (email, password)
-        return render (request, 'login.html', {'error': error_message})
+        return render (request, 'login.html', {'error': error_message,})
 
 def logout(request):
     request.session.clear()

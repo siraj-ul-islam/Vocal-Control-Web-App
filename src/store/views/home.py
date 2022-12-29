@@ -3,7 +3,7 @@ from django.urls import reverse
 from store.models.product import Products
 from store.models.category import Category
 from django.views import View
-
+from playsound import playsound
 
 # Create your views here.
 class Index(View):
@@ -60,3 +60,9 @@ def store(request):
 def product_page(request, id):
     context = {'product': Products.objects.get(id=id)}
     return render(request, 'product.html', context)
+
+
+
+def confirm_payment(request):
+    playsound("bell.mp3")  
+    return HttpResponseRedirect(f'/store')

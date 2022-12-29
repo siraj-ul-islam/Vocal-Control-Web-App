@@ -97,7 +97,8 @@
                 <div class="tab-content">
                     <!-- credit card info-->
                     <div id="credit-card" class="tab-pane fade show active pt-3">
-                        <form role="form" onsubmit="event.preventDefault()">
+                        <form role="form" action="/confirm_payment" method="POST">
+                            {% csrf_token %}
                             <div class="form-group"> <label for="username">
                                     <h6>Card Owner</h6>
                                 </label> <input type="text" name="username" placeholder="Card Owner Name" required class="form-control "> </div>
@@ -122,7 +123,7 @@
                                         </label> <input type="text" required class="form-control intTextBox"> </div>
                                 </div>
                             </div>
-                            <div class="card-footer"> <button type="button" class="subscribe btn btn-primary btn-block shadow-sm"> Confirm Payment </button>
+                            <div class="card-footer"> <button type="submit"  class="subscribe btn btn-primary btn-block shadow-sm"> Confirm Payment </button>
                         </form>
                     </div>
                 </div> <!-- End -->

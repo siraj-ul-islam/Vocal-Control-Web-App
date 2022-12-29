@@ -355,6 +355,7 @@ function act(transcript){
         message.text = "ok Adding this item to shopping cart";
         // speak!
         speechSynthesis.speak(message);
+
         document.querySelector("#add_btn").click();
       }
                   else if(noteContent.includes("select size") || noteContent.includes("choice size")){
@@ -490,6 +491,11 @@ function act(transcript){
         message.text = "OK Submitting the Log In Form";
         // speak!
         speechSynthesis.speak(message);
+
+        // message.text = "Hi my name is Wilson I am your virtual assistance to control this website. you must have to say Wilson before every command";
+        // // speak!
+        // speechSynthesis.speak(message);
+
     }else if(noteContent.includes("add") && noteContent.includes("to shopping car")){
       var prod_name = noteContent.replace('add', '').replace("to shopping ",'').replace("cart",'').replace("card",'')
       try{
